@@ -1,0 +1,67 @@
+@import '~antd/dist/antd.css';
+.App {
+  text-align: center;
+}
+
+.App-logo {
+  animation: App-logo-spin infinite 20s linear;
+  height: 40vmin;
+  pointer-events: none;
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+.GGEditor{
+  display: flex;
+  flex-direction: row;
+  margin-top: 60px;
+}
+.ItemPanel{
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  width: 200px;
+}
+.command{
+  width: 9%;
+  height: 45px;
+  background: #61dafb;
+  display: flex;
+  align-items: center;
+  border: 1px solid rgba(0, 174, 255, 0.938);
+  border-radius: 5px;
+  text-align: center;
+  font-size: 16px;
+  color: white;
+}
+.Toolbar{
+  border: 1px solid red;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  height: 30px;
+  position: absolute;
+  top: 0;
+}
+

@@ -42,6 +42,7 @@
   justify-content: center;
   flex-direction: column;
   width: 200px;
+  background: rgb(250, 250, 250);
 }
 .command{
   width: 9%;
@@ -49,12 +50,14 @@
   background: #61dafb;
   display: flex;
   align-items: center;
-  border: 1px solid rgba(0, 174, 255, 0.938);
-  border-radius: 5px;
+  border-right: 1px solid rgba(0, 174, 255, 0.938);
   text-align: center;
   font-size: 16px;
-  color: white;
+  color: white; 
+  padding-left: 20px;
+  cursor: pointer;
 }
+
 .Toolbar{
   border: 1px solid red;
   width: 100%;

@@ -2,54 +2,107 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { getArg, setArg } from '../../service/ArgService';
 import { withPropsAPI } from 'gg-editor';
+import './ShellScriptStepEditor.css';
 
 import 'antd/dist/antd.css';
 import { Input } from 'antd';
 
-import Button from 'antd/lib/button';
+// import Button from 'antd/lib/button';
+import {getDefaultStep} from "../../util/StepUtil"
 const { TextArea } = Input;
 
-class ScriptStepEditor extends React.Component {
-    componentDidMount() {
-        const { propsAPI } = this.props;
-        console.log(propsAPI);
-    }
-    
-    textChanged = script => {
-        setArg(this.props.step, 'script', script);
-        this.props.onChange(this.props.step);
-        //console.log(this.item.model);
-    };
-    nameChanged = name => {
-        setArg(this.props.step, 'name', name);
-        this.props.onChange(this.props.step);
-    };
-    render() {
-        const { step } = this.props;
-        console.log("render:step:" + step);
+class ShellScriptStepEditor extends React.Component {
 
-        return <div>
-            <div className="name">name:<TextArea rows={2}
+
+    textChanged = (name,targetValue) => {
+        const { propsAPI } = this.props;
+        let item=propsAPI.getSelected()[0];
+        let {model}=item;
+        let step;
+        if(model.myProps&&model.myProps.step){
+            step=model.myProps.step;
+        }else {
+            step=getDefaultStep();
+        }
+
+        switch (name) {
+            case "name":
+                step.name=targetValue;break;
+            case "label":
+                step.label=targetValue;break;
+                
+            default:
+                step=setArg(step,name,targetValue);
+        }
+        model=this.setStepToModel(model,step);
+        propsAPI.update(item,model);
+
+        this.props.onChange(step);
+    };
+
+    getStepFromModel(model){
+        let {myProps}=model;
+        if(myProps && myProps.step){
+            return  myProps.step;
+        }
+    }
+
+    setStepToModel(model,step){
+        if(!model.myProps){
+            model.myProps={};
+        }
+        model.myProps.step=step;
+        return model;
+    }
+
+
+    render() {
+        const { propsAPI } = this.props;
+        let item=propsAPI.getSelected()[0];
+        let {model}=item;
+        let step=this.getStepFromModel(model);
+        if(!step){
+            step=getDefaultStep();
+        }
+        return <div className="wrapper">
+        <div className="stage">
+            <div className="text">stage</div>
+        </div>
+            <div className="name">name:
+                <TextArea rows={2}
                 className="editor-step-detail-name"
-                defaultValue={getArg(step, 'name').value}
-                onChange={e => this.nameChanged(e.target.value)} /></div>
-            <div>shell
+                defaultValue={step.name}
+                onChange={e => this.textChanged("name",e.target.value)} />
+            </div>
+            <div>label
                 <TextArea
                     className="editor-step-detail-script"
-                    defaultValue={getArg(step, 'script').value}
-                    onChange={e => this.textChanged(e.target.value)}
+                    defaultValue={step.label}
+                    onChange={e => this.textChanged("label",e.target.value)}
                     rows={2}
-                    
                 />
             </div>
-            <Button type="primary">完成</Button>
+            <div>arg1
+                <TextArea
+                    className="editor-step-detail-script"
+                    defaultValue={getArg(step,"arg1").value}
+                    onChange={e => this.textChanged("arg1",e.target.value)}
+                    rows={2}
+                />
+            </div>
+            <div className="step">
+              <div className="text">step</div>
+              <div className="print">
+                <TextArea className="print"  defaultValue={step.script} rows={2} />
+              </div>
+            </div>
         </div>;
     }
 }
-export default withPropsAPI(ScriptStepEditor);
-ScriptStepEditor.propTypes = {
+export default withPropsAPI(ShellScriptStepEditor);
+ShellScriptStepEditor.propTypes = {
     step: PropTypes.any,
     onChange: PropTypes.func,
 };
 
-ScriptStepEditor.stepType = 'sh'; // FIXME do this a better way
+ShellScriptStepEditor.stepType = 'sh'; // FIXME do this a better way
